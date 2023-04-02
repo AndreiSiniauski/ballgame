@@ -32,10 +32,6 @@
             </div>
         </div>
     </div>
-    <div id="qr-code">
-        <h1>You need a smartphone to play this game!</h1>
-        <img src="assets/qr-code.png"/>
-    </div>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
         body, #render-canvas, #user-interface {
@@ -447,6 +443,7 @@
         let gameOverScreen = window.document.getElementById('game-over-screen');
         let bestScoreInfo = window.document.getElementById('best-score');
         let nowScoreInfo = window.document.getElementById('now-score');
+        let installIcon = window.document.getElementById('install-icon');
         // Извлечение тегов для магазина
         let shopIcon = window.document.getElementById('shop-icon');
         let backIcon = window.document.getElementById('back-icon');
@@ -693,7 +690,7 @@
             deleteDemoObjects();
             createGameObjects();
         });
-        window.addEventListener('touchstart', (event) => {
+        window.addEventListener('touchend', (event) => {
             if(state === GAME_OVER) {
                 event.preventDefault();
                 gameOverScreen.style.display = 'none';
@@ -726,8 +723,17 @@
                 }
             }
         });
+        
+        // Установка
+        let defaultInstallEvent = null;
         window.addEventListener('beforeinstallprompt', (event) => {
             event.preventDefault();
+            defaultInstallEvent = event;
         })
+        installIcon.addEventListener('click', () => {
+            defaultInstallEvent.prompt();
+            installIcon.style.display = 'none';
+            defaultInstallEvent = null;
+        });
     </script>
 </body>
